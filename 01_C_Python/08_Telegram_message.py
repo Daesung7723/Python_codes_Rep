@@ -1,6 +1,6 @@
 import asyncio
 import telegram
-token = '7071117312:AAGswfTHRzbsZTuRCE7nI9-2rSLhbLGq_MA'
+token =
 chat_id = '7388700699'
 message = '1st python test message'
 
