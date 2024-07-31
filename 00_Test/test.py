@@ -1,22 +1,62 @@
-import os
-import time
+"""
+Using global variable for inter thread communication
+multi thread example
+"""
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+from time import sleep
+import _thread
 
-def processing_time(func):
-    def w(*args, **kwargs):
-        start_time = time.time()
-        r = func(*args, **kwargs)
-        end_time = time.time()
-        print(f"[{func.__module__}]{func.__name__} 실행 시간: {(end_time - start_time):.6f}")
-        return r
-    return w
 
-@processing_time
-def TxtFile_Read(str) :
-    with open(str, 'r') as f:
-        content = f.read()
-    print(content)
+def core0_thread():
+    global lock
+    while True:
+        wait_counter = 0
+        # try to acquire lock but don't wait
+        while not lock.acquire(0):  # lock.acquire(waitflag=1, timeout=-1)
+            # count the number of times the lock is polled
+            # Our code is not in a waiting state
+            # we are just polling the lock at the end of each loop iteration
+            wait_counter += 1
 
-if __name__ == '__main__' :    
-    TxtFile_Read('filename.txt')
+        print("CORE 0 - I counted to " + str(wait_counter) + " while waiting")
+        print('C')
+        sleep(0.5)
+        print('O')
+        sleep(0.5)
+        print('R')
+        sleep(0.5)
+        print('E')
+        sleep(0.5)
+        print('0')
+        sleep(0.5)
+
+        # release lock
+        lock.release()
+
+
+def core1_thread():
+    global lock
+    while True:
+        # try to acquire lock - wait if in use
+        lock.acquire()
+
+        print('c')
+        sleep(0.5)
+        print('o')
+        sleep(0.5)
+        print('r')
+        sleep(0.5)
+        print('e')
+        sleep(0.5)
+        print('1')
+        sleep(0.5)
+
+        # release lock
+        lock.release()
+
+
+# create a global lock
+lock = _thread.allocate_lock()
+
+second_thread = _thread.start_new_thread(core1_thread, ())
+core0_thread()
