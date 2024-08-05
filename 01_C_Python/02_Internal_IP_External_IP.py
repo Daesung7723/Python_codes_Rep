@@ -1,11 +1,26 @@
 import socket
-import requests
-import re
+import urllib.request
 
-in_addr = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-in_addr.connect(("www.google.com",443))
-print("Int. IP : ", in_addr.getsockname()[0])
+def get_internal_ip():
+    try:
+        host_name = socket.gethostname()
+        internal_ip = socket.gethostbyname(host_name)
+        return internal_ip
+    except Exception as e:
+        return str(e)
 
-req = requests.get("http://ipconfig.kr")
-out_addr = re.search(r'IP Address : (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', req.text)[1]
-print("Ext. IP : ", out_addr)
+def get_external_ip():
+    try:
+        url = "https://api64.ipify.org?format=json"
+        response = urllib.request.urlopen(url)
+        data = response.read().decode("utf-8")
+        external_ip = data.split(':')[1].split('"')[1]
+        return external_ip
+    except Exception as e:
+        return str(e)
+
+internal_ip = get_internal_ip()
+external_ip = get_external_ip()
+
+print("Int. IP :", internal_ip)
+print("Ext. IP :", external_ip)

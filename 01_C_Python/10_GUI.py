@@ -12,7 +12,7 @@ def btn_clk():
 win = tkinter.Tk()
 win.title("Test title")
 win.geometry("500x500")
-win.resizable(False,False)
+win.resizable(True,True)
 
 set_font = tkinter.font.Font(size=40)
 label = tkinter.Label(win, text='', font=set_font)

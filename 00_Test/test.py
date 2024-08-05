@@ -1,62 +1,26 @@
-"""
-Using global variable for inter thread communication
-multi thread example
-"""
+import socket
+import urllib.request
 
-from time import sleep
-import _thread
+def get_internal_ip():
+    try:
+        host_name = socket.gethostname()
+        internal_ip = socket.gethostbyname(host_name)
+        return internal_ip
+    except Exception as e:
+        return str(e)
 
+def get_external_ip():
+    try:
+        url = "https://api64.ipify.org?format=json"
+        response = urllib.request.urlopen(url)
+        data = response.read().decode("utf-8")
+        external_ip = data.split(':')[1].split('"')[1]
+        return external_ip
+    except Exception as e:
+        return str(e)
 
-def core0_thread():
-    global lock
-    while True:
-        wait_counter = 0
-        # try to acquire lock but don't wait
-        while not lock.acquire(0):  # lock.acquire(waitflag=1, timeout=-1)
-            # count the number of times the lock is polled
-            # Our code is not in a waiting state
-            # we are just polling the lock at the end of each loop iteration
-            wait_counter += 1
+internal_ip = get_internal_ip()
+external_ip = get_external_ip()
 
-        print("CORE 0 - I counted to " + str(wait_counter) + " while waiting")
-        print('C')
-        sleep(0.5)
-        print('O')
-        sleep(0.5)
-        print('R')
-        sleep(0.5)
-        print('E')
-        sleep(0.5)
-        print('0')
-        sleep(0.5)
-
-        # release lock
-        lock.release()
-
-
-def core1_thread():
-    global lock
-    while True:
-        # try to acquire lock - wait if in use
-        lock.acquire()
-
-        print('c')
-        sleep(0.5)
-        print('o')
-        sleep(0.5)
-        print('r')
-        sleep(0.5)
-        print('e')
-        sleep(0.5)
-        print('1')
-        sleep(0.5)
-
-        # release lock
-        lock.release()
-
-
-# create a global lock
-lock = _thread.allocate_lock()
-
-second_thread = _thread.start_new_thread(core1_thread, ())
-core0_thread()
+print("Int. IP :", internal_ip)
+print("Ext. IP :", external_ip)
