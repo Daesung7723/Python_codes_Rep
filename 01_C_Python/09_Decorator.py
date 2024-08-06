@@ -8,7 +8,7 @@ def processing_time(func):
         start_time = time.time()
         r = func(*args, **kwargs)
         end_time = time.time()
-        print(f"[{func.__module__}]{func.__name__} 실행 시간: {(end_time - start_time):.6f}")
+        print(f"[{func.__module__}]{func.__name__} exe time : {(end_time - start_time):.6f}")
         return r
     return w
 
