@@ -19,13 +19,10 @@ def Leds(state, c):
     else:
         Leds_list[c].value(1)
 
-
-# Close RGB light
 def Leds_off():
     for i in range(len(Leds_list)) :
         Leds_list[i].value(0)
 
-# Main loop, switch a color every 0.5s
 if __name__ == '__main__':
     color = 0
     while True:
