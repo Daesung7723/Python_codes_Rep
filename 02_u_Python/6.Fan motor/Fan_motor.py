@@ -2,7 +2,7 @@ from machine import Pin, PWM
 
 # Initialize the motor fan
 fan = PWM(Pin(13))
-fan.freq(1000) # Set frequency
+fan.freq(100) # Set frequency
 
 # Numerical remapping
 def my_map(x, in_min, in_max, out_min, out_max):

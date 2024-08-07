@@ -1,38 +1,28 @@
-from tkinter import *
-from tkinter import ttk
+from machine import Pin, PWM
+import time
 
-def calculate(*args):
-    try:
-        value = float(feet.get())
-        meters.set(int(0.3048 * value * 10000.0 + 0.5)/10000.0)
-    except ValueError:
-        pass
+# Initialize the motor fan
+fan = PWM(Pin(13))
+fan.freq(1000) # Set frequency
 
-root = Tk()
-root.title("Feet to Meters")
+# Numerical remapping
+def my_map(x, in_min, in_max, out_min, out_max):
+    return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 
-mainframe = ttk.Frame(root, padding="3 3 12 12")
-mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-root.columnconfigure(0, weight=1)
-root.rowconfigure(0, weight=1)
+# Set the fan speed, speed=[0, 100]
+def pwm_motor(speed):
+    if speed > 100 or speed < 0:
+        print('Please enter a limited speed value of 0-100 ')
+        return
+    pulse = my_map(speed, 0, 100, 0, 65535)
+    fan.duty_u16(pulse)
 
-feet = StringVar()
-feet_entry = ttk.Entry(mainframe, width=7, textvariable=feet)
-feet_entry.grid(column=2, row=1, sticky=(W, E))
 
-meters = StringVar()
-ttk.Label(mainframe, textvariable=meters).grid(column=2, row=2, sticky=(W, E))
+pwm_motor(50)
 
-ttk.Button(mainframe, text="Calculate", command=calculate).grid(column=3, row=3, sticky=W)
+fan.freq(130)
+time.sleep(1)
+fan.freq(146)
+time.sleep(1)
+fan.freq(164.8)
 
-ttk.Label(mainframe, text="feet").grid(column=3, row=1, sticky=W)
-ttk.Label(mainframe, text="is equivalent to").grid(column=1, row=2, sticky=E)
-ttk.Label(mainframe, text="meters").grid(column=3, row=2, sticky=W)
-
-for child in mainframe.winfo_children(): 
-    child.grid_configure(padx=5, pady=5)
-
-feet_entry.focus()
-root.bind("<Return>", calculate)
-
-root.mainloop()
