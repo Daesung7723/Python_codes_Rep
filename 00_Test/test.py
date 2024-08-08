@@ -1,28 +1,27 @@
-from machine import Pin, PWM
-import time
+import ws2812b
+import utime
 
-# Initialize the motor fan
-fan = PWM(Pin(13))
-fan.freq(1000) # Set frequency
+ring_pin = 17 # Mdoule connect pin
+numpix   = 8  # Number of RGB lights
+# Initialize RGB light halo
+strip = ws2812b.ws2812b(numpix, 0, ring_pin)
+strip.fill(0,0,0) # Clear RGB buffer
+strip.show()      # Refresh display
 
-# Numerical remapping
-def my_map(x, in_min, in_max, out_min, out_max):
-    return int((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
+while True:
+    for i in range(numpix): 
+        for j in range(5):
+            strip.set_pixel(i, 10, 10, 10)
+            strip.show()
+            utime.sleep(.03)
+            strip.set_pixel(i, 0, 0, 0)
+            strip.show()
+            utime.sleep(.03)
 
-# Set the fan speed, speed=[0, 100]
-def pwm_motor(speed):
-    if speed > 100 or speed < 0:
-        print('Please enter a limited speed value of 0-100 ')
-        return
-    pulse = my_map(speed, 0, 100, 0, 65535)
-    fan.duty_u16(pulse)
-
-
-pwm_motor(50)
-
-fan.freq(130)
-time.sleep(1)
-fan.freq(146)
-time.sleep(1)
-fan.freq(164.8)
-
+    
+    for i in range(numpix): 
+        strip.set_pixel(7-i, 10, 10, 10)
+        strip.show()
+        utime.sleep(.03)
+        strip.set_pixel(7-i, 0, 0, 0)
+        strip.show()

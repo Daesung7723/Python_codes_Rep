@@ -1,3 +1,5 @@
+# https://docs.micropython.org/en/latest/library/network.WLAN.html
+
 print("Scanning for WiFi networks, please wait...")
 print("")
 

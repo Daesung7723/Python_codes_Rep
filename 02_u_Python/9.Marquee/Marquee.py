@@ -12,9 +12,9 @@ strip.show()      # Refresh display
 while True:
     for i in range(numpix):
         strip.fill(0,0,0)
-        r = random.randint(0, 256)
-        g = random.randint(0, 256)
-        b = random.randint(0, 256)
+        r = random.randint(0, 10)
+        g = random.randint(0, 10)
+        b = random.randint(0, 10)
 
         strip.set_pixel(i, r, g, b)
         strip.show()
