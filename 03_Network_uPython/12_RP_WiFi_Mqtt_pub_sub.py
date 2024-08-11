@@ -8,7 +8,7 @@ led_onboard = Pin('LED', Pin.OUT)
 ssid = "DDTSW_Classroom_1"
 password = "11111111"
 
-SERVER = "192.168.1.211"
+broker = "192.168.1.211"
 PORT=1883
 CLIENT_ID="RP_Pico" 
 PUB_TOPIC="/pc"
@@ -58,7 +58,7 @@ def mqtt_send(tim):
 if __name__=="__main__":
     wifi_disconnect()
     if wifi_connect():
-        client = MQTTClient(CLIENT_ID, SERVER, PORT)
+        client = MQTTClient(CLIENT_ID, broker, PORT)
         client.set_callback(sub_callback)
         client.connect()
         client.subscribe(SUB_TOPIC)

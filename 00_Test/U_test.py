@@ -1,20 +1,19 @@
 import time
 import network
 from mqtt import MQTTClient
-from machine import Pin, Timer
+import machine
 
-led_onboard = Pin('LED', Pin.OUT)
+
+led_onboard = machine.Pin('LED', machine.Pin.OUT)
 
 ssid = "N-517"
 password = "83634038"
-# ssid = "DDTSW_Classroom_1"
-# password = "11111111"
 
-SERVER = "192.168.1.211"
+broker = "192.168.1.211"
 PORT=1883
 CLIENT_ID="RP_Pico" 
 PUB_TOPIC="/pc"
-SUB_TOPIC = "/RP_Pico"
+cnt = 0
 
 def wifi_disconnect():
     wlan = network.WLAN(network.STA_IF)
@@ -48,24 +47,13 @@ def wifi_connect():
         return True
 
 
-def sub_callback(topic, msg):
-    print("Data Subscribe..")
-    print(topic, msg)
-
-
-def mqtt_send(tim):
-    client.publish(PUB_TOPIC, "Hello pc from RP_Pico")
-
-
 if __name__=="__main__":
     wifi_disconnect()
     if wifi_connect():
-        client = MQTTClient(CLIENT_ID, SERVER, PORT)
-        client.set_callback(sub_callback)
+        client = MQTTClient(CLIENT_ID, broker, PORT)
         client.connect()
-        client.subscribe(SUB_TOPIC)
         
-        tim = Timer(mode=Timer.PERIODIC, period=1000, callback=mqtt_send)
-                
         while True:
-            client.check_msg()
+            cnt = cnt+1
+            client.publish(PUB_TOPIC, f"Hello pc : {cnt}")
+            time.sleep(1.0)
