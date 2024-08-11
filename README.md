@@ -1,1 +1,1 @@
-test for first try!
+These program codes were written for the "IoT Expert Course" held in Laos in August 2024.
