@@ -34,7 +34,7 @@ def ap_mode(ssid, password):
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)   #creating socket object
     s.bind(('', 80))
-    s.listen(5)
+    s.listen(1)
 
     while True:
       conn, addr = s.accept()

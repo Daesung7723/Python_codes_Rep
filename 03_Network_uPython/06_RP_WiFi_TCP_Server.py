@@ -5,8 +5,8 @@ import usocket as socket
 import _thread as thread
 
 led_onboard = machine.Pin('LED', machine.Pin.OUT)
-ssid = "U+Net3808"
-password = "952975#94P"
+ssid = "DDTSW_Classroom_1"
+password = "11111111"
 server_port = 12345  # TCP Server Port No.
 
 def wifi_connect():

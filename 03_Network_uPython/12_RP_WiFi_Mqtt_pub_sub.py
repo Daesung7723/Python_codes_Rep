@@ -5,8 +5,6 @@ from machine import Pin, Timer
 
 led_onboard = Pin('LED', Pin.OUT)
 
-ssid = "N-517"
-password = "83634038"
 ssid = "DDTSW_Classroom_1"
 password = "11111111"
 

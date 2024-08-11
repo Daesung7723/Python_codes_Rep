@@ -1,12 +1,11 @@
 import time
 import network
 from mqtt import MQTTClient
-from machine import Pin, Timer
+import machine
 
-led_onboard = Pin('LED', Pin.OUT)
 
-ssid = "N-517"
-password = "83634038"
+led_onboard = machine.Pin('LED', machine.Pin.OUT)
+
 ssid = "DDTSW_Classroom_1"
 password = "11111111"
 
@@ -42,18 +41,12 @@ def sub_callback(topic, msg):
     print(topic, msg)
 
 
-def mqtt_send(tim):
-    client.publish(PUB_TOPIC, "Hello pc from RP_Pico")
-
-
 if __name__=="__main__":
     if wifi_connect():
         client = MQTTClient(CLIENT_ID, SERVER, PORT)
         client.set_callback(sub_callback)
         client.connect()
         client.subscribe(SUB_TOPIC)
-        
-        tim = Timer(mode=Timer.PERIODIC, period=1000, callback=mqtt_send)
         
         while True:
             client.check_msg()

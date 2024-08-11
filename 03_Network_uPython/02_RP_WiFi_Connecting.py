@@ -3,8 +3,8 @@ import network
 import time
 
 led_onboard = machine.Pin('LED', machine.Pin.OUT)
-ssid = "Mffice_1"
-password = "mfficegg"
+ssid = "DDTSW_Classroom_1"
+password = "11111111"
 
 def wifi_connect():
     wlan = network.WLAN(network.STA_IF) 
