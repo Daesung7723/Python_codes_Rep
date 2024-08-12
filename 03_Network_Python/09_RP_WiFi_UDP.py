@@ -35,6 +35,7 @@ def wifi_connect():
         return True
 
 def main():
+    cnt = 0
     if wifi_connect():
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         client_socket.bind(('0.0.0.0', client_port))
@@ -45,7 +46,8 @@ def main():
             print("Connected to server")
 
             while True:
-                data_to_send = "Hello, Server!"
+                cnt += 1
+                data_to_send = f"Hello, Server! [{cnt}]"
                 client_socket.sendto(data_to_send.encode('utf-8'), server_addr)
                 print("Sent data:", data_to_send)
 
