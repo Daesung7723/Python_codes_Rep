@@ -1,8 +1,8 @@
 import asyncio
 import telegram
-token =
-chat_id = 
-message = '1st python test message'
+token = 1 
+chat_id = 2
+message = 'Hello Lao.'
 
 async def main():
     bot = telegram.Bot(token)
